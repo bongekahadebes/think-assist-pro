@@ -49,10 +49,10 @@ function ChatPage() {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  async function send(text: string) {
+  async function send(text: string, base?: Message[]) {
     const trimmed = text.trim();
     if (!trimmed || loading) return;
-    const next: Message[] = [...messages, { role: "user", content: trimmed }];
+    const next: Message[] = [...(base ?? messages), { role: "user", content: trimmed }];
     setMessages(next);
     setInput("");
     setError(null);
@@ -73,7 +73,7 @@ function ChatPage() {
     const trimmedHistory = messages.slice(0, messages.lastIndexOf(lastUser));
     setMessages(trimmedHistory);
     setError(null);
-    void send(lastUser.content);
+    void send(lastUser.content, trimmedHistory);
   }
 
   return (
