@@ -70,7 +70,8 @@ function ChatPage() {
   function retry() {
     const lastUser = [...messages].reverse().find((m) => m.role === "user");
     if (!lastUser) return;
-    setMessages((m) => m.filter((_, i) => i !== m.length - 1 || m[i].role !== "user"));
+    const trimmedHistory = messages.slice(0, messages.lastIndexOf(lastUser));
+    setMessages(trimmedHistory);
     setError(null);
     void send(lastUser.content);
   }

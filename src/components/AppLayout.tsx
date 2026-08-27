@@ -86,7 +86,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           aria-expanded={open}
           className="grid size-10 place-items-center rounded-xl text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
         >
-          {open ? <Menu className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+          <Menu className="size-5" aria-hidden />
         </button>
       </header>
 
