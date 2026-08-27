@@ -40,6 +40,14 @@ export const Route = createFileRoute("/research")({
 const TYPES = ["Quick Summary", "Detailed Analysis", "Key Insights", "Recommendations"];
 const SECTIONS = ["Overview", "Key Information", "Insights", "Recommendations", "Sources"];
 
+function plain(text: string) {
+  return text
+    .replace(/^#{1,6}\s*/gm, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/^\s*[*-]\s+/gm, "\u2022 ")
+    .trim();
+}
+
 function splitSections(text: string) {
   const result: Array<{ heading: string; body: string }> = [];
   const lines = text.split("\n");
@@ -168,14 +176,14 @@ function ResearchPage() {
               <article key={s.heading} className="rounded-2xl border border-border bg-card p-5 sm:p-6">
                 <h2 className="text-base font-semibold text-foreground">{s.heading}</h2>
                 <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-relaxed text-muted-foreground">
-                  {s.body || "Not provided."}
+                  {plain(s.body) || "Not provided."}
                 </p>
               </article>
             ))
           ) : (
             <article className="rounded-2xl border border-border bg-card p-5 sm:p-6">
               <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-muted-foreground">
-                {output}
+                {plain(output)}
               </p>
             </article>
           )}

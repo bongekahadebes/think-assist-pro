@@ -31,6 +31,16 @@ export const Route = createFileRoute("/chat")({
 
 type Message = { role: "user" | "assistant"; content: string };
 
+/** Renders model output as clean plain text (light markdown cleanup). */
+function plain(text: string) {
+  return text
+    .replace(/^#{1,6}\s*/gm, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/^\s*[*-]\s+/gm, "\u2022 ")
+    .replace(/^---$/gm, "")
+    .trim();
+}
+
 const EXAMPLES = [
   "How can I improve customer service?",
   "Give me ways to increase workplace productivity.",
@@ -134,7 +144,7 @@ function ChatPage() {
                     : "bg-muted text-foreground",
                 )}
               >
-                {m.content}
+                {m.role === "assistant" ? plain(m.content) : m.content}
                 {m.role === "assistant" && (
                   <button
                     type="button"
